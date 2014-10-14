@@ -3,7 +3,7 @@ public class Matriz {
 	
 	private int dimension, lado, capacidad;
 	private int[] memoria;
-	
+	private String charText;
 	public Matriz(int dimension, int lado){
 		
 		this.dimension = dimension;
@@ -59,5 +59,13 @@ public class Matriz {
 			e.printStackTrace();
 		}
 	}
-
+	public int getIndice(char caracter){
+		int indice = charText.indexOf(caracter);
+		return indice;
+		
+	}
+	public char getLetra(int indice){
+		char letra = charText.charAt(indice);
+		return letra;
+	}
 }
