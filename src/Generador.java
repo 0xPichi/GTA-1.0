@@ -57,7 +57,7 @@ public static int[][] leerSimple(String nombre){
 		
 		a.guardarDato((int)'r', 4, 5);
 
-		System.out.println((char)a.getDato(4, 40));
+		System.out.println((char)a.getDato(4, 6));
 	}
 
 }
