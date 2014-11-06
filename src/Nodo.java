@@ -1,7 +1,7 @@
 public class Nodo {
 
 	private char letra;
-	//private int valor;
+	private int valor;
 	private Nodo[] nodes;
 	private int nivel;
 	public static int dimension;
@@ -38,6 +38,6 @@ public class Nodo {
 
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
-	}
+	}  
 
 }

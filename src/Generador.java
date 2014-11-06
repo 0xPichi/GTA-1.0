@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 
 public class Generador {
@@ -98,20 +99,19 @@ public class Generador {
 	}
 	
 	public static void main(String[] args) {
-		
-		//StringBuilder texto = leerTexto("galdos.txt");
-		
-		//HashMap<Character, Integer> mapa = crearHash(texto);
-		//HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto, mapa);
-		
-		/*Matriz a = new Matriz(null, mapa, '\u0000');
-		Matriz b = new Matriz(a, null, 'd'); 
-		Matriz c = new Matriz(b, null, 't');*/			
 
 		long startTime = System.currentTimeMillis();
 		
-		Nodo.dimension = 5;
-		Nodo raiz = new Nodo(1, 79);
+		Scanner in = new Scanner(System.in);
+		System.out.print("Refinamiento: ");
+		int refinamiento  = in.nextInt();
+		
+		StringBuilder texto = leerTexto("galdos.txt");
+		
+		HashMap<Character, Integer> mapa = crearHash(texto);
+		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto, mapa);	
+
+		Matriz niuu = new Matriz(mapita, refinamiento);
 
 		long endTime = System.currentTimeMillis();
 		System.out.println("Tiempo: "+(endTime - startTime) + " ms");
