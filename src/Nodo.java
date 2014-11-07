@@ -10,6 +10,11 @@ public class Nodo {
 	public static int dimension;
 	private static char[] caracteres;
 	
+	/**
+	 * Constructor que crea el Nodo raiz, y va creando objetos Nodo(nivel, letra) recursivamente.
+	 * 
+	 * @param caracteres Array con los distintos caracteres que van a existir
+	 */
 	public Nodo(char[] caracteres){
 		
 		Nodo.caracteres = caracteres;
@@ -23,19 +28,27 @@ public class Nodo {
 		}
 
 	}
+	/**
+	 * Constructor de subNodos que van a formar parte del Nodo raiz y a su vez van a crear mas objetos
+	 * Nodo recursivamente hasta completar todos los niveles del arbol.
+	 * 
+	 * @param nivel dimension en la que va a estar dicho Nodo
+	 * @param letra letra que va a representar al Nodo
+	 */
 	public Nodo(int nivel, char letra){
 		
 		this.nivel = nivel;
-		this.letra = letra;
-		String espacio = "  ";
+		this.letra = letra;		
 		
+		//System.out.printl super chulo para que parezca un arbol
+		/*
+		String espacio = "  ";
 		for (int i = 0; i < nivel; i++) {
 			
 			espacio += espacio;
-		}
-		
-		//System.out.println(espacio +"C: " + letra + "; "+valor);
-		
+		}		
+		System.out.println(espacio +"C: " + letra + "; "+valor);
+		*/		
 		if(nivel != dimension){
 			
 			this.nodes = new ArrayList<Nodo>();
@@ -51,9 +64,34 @@ public class Nodo {
 		}
 	}
 	
+	/**
+	 * Metodo que a partir de una cadena recorre el arbol y coloca un valor dado al final. La cadena
+	 * indica las direcciones que debemos tomar. Por ejemplo:
+	 * 
+	 * Tenemos esta estructura de datos:
+	 * 
+	 *         a                                                                a
+	 *        /                                                                
+	 *       a                                                                a  
+	 *     /  \                                                             /  \
+	 *    /    b                                                           /    b
+	 *   /                                                                /
+	 * Raiz              Indicamos que la cadena es "ab" ->            Raiz
+	 *   \
+	 *    \    a                                                                 a
+	 *     \  /                                                                  
+	 *       b                                                                b
+	 *        \
+	 *         b                                                                 b
+	 *         
+	 * Busca la ruta recursivamente hasta llegar al punto deseado y establecer el valor del objeto.
+	 *         
+	 * @param cadena 
+	 * @param valor
+	 */
 	public void set(String cadena, int valor){
 
-		if(this.nivel == cadena.length()){
+		if(nivel == cadena.length()){
 			
 			this.valor = valor;
 		}else{
@@ -67,11 +105,18 @@ public class Nodo {
 			}
 		}
 	}
-	
+	/**
+	 * Hace lo mismo que set, pero en este caso en vez de llegar y establecer el atributo "valor"
+	 * del objeto, lo que hace es recuperarlo.
+	 * 
+	 * @param cadena
+	 * @return
+	 */
 	public int get(String cadena){
 
-		if(this.nivel == cadena.length()){
+		if(nivel == cadena.length()){
 			
+			System.out.println("C: " + this.letra + "; "+this.valor);
 			return this.valor;
 		}else{
 			
@@ -79,6 +124,7 @@ public class Nodo {
 				
 				if(a.getLetra() == cadena.charAt(nivel)){
 					
+					System.out.println("C: " + this.letra + "; "+this.valor);
 					return a.get(cadena);
 				}
 			}

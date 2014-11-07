@@ -138,15 +138,15 @@ public class Generador {
 		// HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto,
 		// mapa);
 
-		//char[] caracteres = pasoAChar(mapa);
+		char[] caracteres = pasoAChar(mapa);
 
-		char[] caracteresPrueba = {'a','b', 'c'};
+		//char[] caracteresPrueba = {'a','b', 'c'};
 
 		Nodo.dimension = 3;
-		Nodo raiz = new Nodo(caracteresPrueba);
+		Nodo raiz = new Nodo(caracteres);
 		
-		raiz.set("aab", 65);
-		System.out.println(raiz.get("aab"));
+		raiz.set("acb", 65);
+		System.out.println(raiz.get("acb"));
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Tiempo: " + (endTime - startTime) + " ms");
