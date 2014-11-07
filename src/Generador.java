@@ -144,11 +144,9 @@ public class Generador {
 		
 		Nodo.dimension = 3;
 		Nodo raiz = new Nodo(caracteresPrueba);
-
-		for (int i = 0; i < caracteresPrueba.length; i++) {
-
-			raiz.nodes.add(new Nodo(1, caracteresPrueba[i]));
-		}
+		
+		raiz.set("aab", 65);
+		System.out.println(raiz.get("aab"));
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Tiempo: " + (endTime - startTime) + " ms");

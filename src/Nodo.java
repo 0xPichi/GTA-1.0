@@ -16,6 +16,11 @@ public class Nodo {
 		this.letra = '\u0000';
 		this.nivel = 0;
 		this.nodes = new ArrayList<Nodo>();
+		
+		for (int i = 0; i < caracteres.length; i++) {
+
+			this.nodes.add(new Nodo(1, caracteres[i]));
+		}
 
 	}
 	public Nodo(int nivel, char letra){
@@ -29,7 +34,7 @@ public class Nodo {
 			espacio += espacio;
 		}
 		
-		System.out.println(espacio +"C: " + letra);
+		//System.out.println(espacio +"C: " + letra + "; "+valor);
 		
 		if(nivel != dimension){
 			
@@ -45,17 +50,40 @@ public class Nodo {
 			this.nodes = null;
 		}
 	}
-
 	
-	public ArrayList<Nodo> getHijos(){
-		
-		if(this.nodes != null){
+	public void set(String cadena, int valor){
+
+		if(this.nivel == cadena.length()){
 			
-			return this.nodes;
+			this.valor = valor;
 		}else{
 			
-			return null;
+			for (Nodo a: nodes) {
+				
+				if(a.getLetra() == cadena.charAt(nivel)){
+					
+					a.set(cadena, valor);
+				}
+			}
 		}
+	}
+	
+	public int get(String cadena){
+
+		if(this.nivel == cadena.length()){
+			
+			return this.valor;
+		}else{
+			
+			for (Nodo a: nodes) {
+				
+				if(a.getLetra() == cadena.charAt(nivel)){
+					
+					return a.get(cadena);
+				}
+			}
+		}
+		return 0;
 	}
 
 	public char getLetra() {
