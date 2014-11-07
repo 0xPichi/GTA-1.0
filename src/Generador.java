@@ -141,7 +141,7 @@ public class Generador {
 		//char[] caracteres = pasoAChar(mapa);
 
 		char[] caracteresPrueba = {'a','b', 'c'};
-		
+
 		Nodo.dimension = 3;
 		Nodo raiz = new Nodo(caracteresPrueba);
 		
