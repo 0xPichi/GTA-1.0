@@ -6,12 +6,13 @@ public class Nodo {
 	private int valor;
 	public ArrayList<Nodo> nodes;
 	private int nivel;
-	public static int dimension;
-	public static char[] caracteres;
-	public static int contador = 0;
 	
-	public Nodo(){
+	public static int dimension;
+	private static char[] caracteres;
+	
+	public Nodo(char[] caracteres){
 		
+		Nodo.caracteres = caracteres;
 		this.letra = '\u0000';
 		this.nivel = 0;
 		this.nodes = new ArrayList<Nodo>();
@@ -21,8 +22,14 @@ public class Nodo {
 		
 		this.nivel = nivel;
 		this.letra = letra;
+		String espacio = "  ";
 		
-		//System.out.println("L: " + nivel + ", C: " + letra);
+		for (int i = 0; i < nivel; i++) {
+			
+			espacio += espacio;
+		}
+		
+		System.out.println(espacio +"C: " + letra);
 		
 		if(nivel != dimension){
 			
@@ -34,13 +41,13 @@ public class Nodo {
 			}
 			
 		}else{
+			
 			this.nodes = null;
 		}
-	
-		contador++;
 	}
+
 	
-	public ArrayList<Nodo> getHijo(){
+	public ArrayList<Nodo> getHijos(){
 		
 		if(this.nodes != null){
 			
@@ -50,14 +57,6 @@ public class Nodo {
 			return null;
 		}
 	}
-	/*
-	public void rellena(char[] caracteres, int nivel){
-		
-		for (int i = 0; i < caracteres.length; i++) {
-			
-			nodes[i] = new Nodo(caracteres[i], this.nivel + 1);
-		}
-	}*/
 
 	public char getLetra() {
 		return letra;

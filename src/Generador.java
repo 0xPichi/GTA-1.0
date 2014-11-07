@@ -57,7 +57,9 @@ public class Generador {
 			try {
 				// Suma 1 al total de veces que se repite ese caracter
 				// (mapa.put('caracter', veces + 1))
-				mapa.put(texto.charAt(i), mapa.get(texto.charAt(i)) + 1);
+				if((int)texto.charAt(i) > 31){
+					mapa.put(texto.charAt(i), mapa.get(texto.charAt(i)) + 1);
+				}
 
 			} catch (NullPointerException e) {
 
@@ -136,19 +138,19 @@ public class Generador {
 		// HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto,
 		// mapa);
 
-		char[] caracteres = pasoAChar(mapa);
+		//char[] caracteres = pasoAChar(mapa);
 
-		Nodo.dimension = 4;
-		Nodo.caracteres = caracteres;
-		Nodo raiz = new Nodo();
+		char[] caracteresPrueba = {'a','b', 'c'};
+		
+		Nodo.dimension = 3;
+		Nodo raiz = new Nodo(caracteresPrueba);
 
-		for (int i = 0; i < caracteres.length; i++) {
+		for (int i = 0; i < caracteresPrueba.length; i++) {
 
-			raiz.nodes.add(new Nodo(1, caracteres[i]));
+			raiz.nodes.add(new Nodo(1, caracteresPrueba[i]));
 		}
-
+		
 		long endTime = System.currentTimeMillis();
-		System.out.println(Nodo.contador);
 		System.out.println("Tiempo: " + (endTime - startTime) + " ms");
 
 	}
