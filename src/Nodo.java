@@ -4,7 +4,7 @@ public class Nodo {
 
 	private char letra;
 	private int valor;
-	public ArrayList<Nodo> nodes;
+	private ArrayList<Nodo> nodes = new ArrayList<Nodo>();
 	private int nivel;
 	
 	public static int dimension;
@@ -20,7 +20,7 @@ public class Nodo {
 		Nodo.caracteres = caracteres;
 		this.letra = '\u0000';
 		this.nivel = 0;
-		this.nodes = new ArrayList<Nodo>();
+		//this.nodes = new ArrayList<Nodo>();
 		
 		for (int i = 0; i < caracteres.length; i++) {
 
@@ -51,7 +51,7 @@ public class Nodo {
 		*/		
 		if(nivel != dimension){
 			
-			this.nodes = new ArrayList<Nodo>();
+			//this.nodes = new ArrayList<Nodo>();
 			
 			for (int i = 0; i < caracteres.length; i++) {
 				
@@ -76,7 +76,7 @@ public class Nodo {
 	 *     /  \                                                             /  \
 	 *    /    b                                                           /    b
 	 *   /                                                                /
-	 * Raiz              Indicamos que la cadena es "ab" ->            Raiz
+	 * Raiz              Indicamos que la cadena es "ab" ->             Raiz
 	 *   \
 	 *    \    a                                                                 a
 	 *     \  /                                                                  
@@ -103,6 +103,7 @@ public class Nodo {
 					a.set(cadena, valor);
 				}
 			}
+			this.valor += valor;
 		}
 	}
 	/**
@@ -116,7 +117,7 @@ public class Nodo {
 
 		if(nivel == cadena.length()){
 			
-			System.out.println("C: " + this.letra + "; "+this.valor);
+			//System.out.println("C: " + this.letra + "; "+this.valor);
 			return this.valor;
 		}else{
 			
@@ -124,7 +125,7 @@ public class Nodo {
 				
 				if(a.getLetra() == cadena.charAt(nivel)){
 					
-					System.out.println("C: " + this.letra + "; "+this.valor);
+					//System.out.println("C: " + this.letra + "; "+this.valor);
 					return a.get(cadena);
 				}
 			}

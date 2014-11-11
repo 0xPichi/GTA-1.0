@@ -124,10 +124,55 @@ public class Generador {
 		}
 		return caracteres;
 	}
+	
+	public static Nodo rellenamatriz(StringBuilder texto, HashMap<Character, ArrayList<Integer>> mapa, Nodo matriz){
+		
+		char caracter;
+		ArrayList<Integer> lista;
+		String cadena = "";
+		
+		for (Entry<Character, ArrayList<Integer>> a : mapa.entrySet()) {
+			
+			caracter = a.getKey();
+			lista = a.getValue();
+			
+			for (int b : lista) {
+				
+				cadena += caracter;
+				
+				for (int i = 1; i < Nodo.dimension; i++) {
+					
+					try{
+						cadena += texto.charAt(b+i);
+						
+					}catch(StringIndexOutOfBoundsException e){
+						//Llega a la ultima posicion
+						
+					}
+				}
+				//System.out.println(cadena);
+				matriz.set(cadena,  matriz.get(cadena) + 1);
+				cadena = "";
+			}
+		}
+		return matriz;
+	}
+	public static String nivelCero(char[] caracteres, double tamano){
+		
+		String fin = "";
+		double aleatorio;
+		
+		for (int i = 0; i < tamano; i++) {
+			
+			aleatorio = Math.random() * caracteres.length;
+			fin += caracteres[(int)aleatorio];
+		}
+		
+		return fin;
+	}
 
 	public static void main(String[] args) {
 
-		long startTime = System.currentTimeMillis();
 		/*
 		 * Scanner in = new Scanner(System.in);
 		 * System.out.print("Refinamiento: "); int refinamiento = in.nextInt();
@@ -135,18 +180,22 @@ public class Generador {
 		StringBuilder texto = leerTexto("galdos.txt");
 
 		HashMap<Character, Integer> mapa = crearHash(texto);
-		// HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto,
-		// mapa);
+		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto, mapa);
 
 		char[] caracteres = pasoAChar(mapa);
 
-		//char[] caracteresPrueba = {'a','b', 'c'};
+		//char[] caracteres = {'a', 'b', 'c'};
 
-		Nodo.dimension = 3;
-		Nodo raiz = new Nodo(caracteres);
+		long startTime = System.currentTimeMillis();
 		
-		raiz.set("acb", 65);
-		System.out.println(raiz.get("acb"));
+		Nodo.dimension = 4;
+
+		//Nodo raiz = new Nodo(caracteres);
+
+		//rellenamatriz(texto, mapita, raiz);
+		
+		//System.out.println(raiz.get("ser "));
+		System.out.println(nivelCero(caracteres, 2000));
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Tiempo: " + (endTime - startTime) + " ms");
