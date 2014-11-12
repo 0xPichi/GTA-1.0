@@ -4,30 +4,32 @@ public class Nodo {
 
 	private char letra;
 	private int valor;
-	private ArrayList<Nodo> nodes = new ArrayList<Nodo>();
+	public ArrayList<Nodo> nodes = null;
 	private int nivel;
 	
 	public static int dimension;
-	private static char[] caracteres;
+	public static char[] caracteres;
 	
 	/**
 	 * Constructor que crea el Nodo raiz, y va creando objetos Nodo(nivel, letra) recursivamente.
 	 * 
 	 * @param caracteres Array con los distintos caracteres que van a existir
 	 */
-	public Nodo(char[] caracteres){
+	public Nodo(char[] caracteres, int dimension){
 		
+		Nodo.dimension = dimension;
 		Nodo.caracteres = caracteres;
 		this.letra = '\u0000';
 		this.nivel = 0;
-		//this.nodes = new ArrayList<Nodo>();
+		this.nodes = new ArrayList<Nodo>();
 		
 		for (int i = 0; i < caracteres.length; i++) {
 
-			this.nodes.add(new Nodo(1, caracteres[i]));
+			this.nodes.add(new Nodo(nivel + 1, caracteres[i]));
 		}
 
 	}
+	
 	/**
 	 * Constructor de subNodos que van a formar parte del Nodo raiz y a su vez van a crear mas objetos
 	 * Nodo recursivamente hasta completar todos los niveles del arbol.
@@ -51,7 +53,7 @@ public class Nodo {
 		*/		
 		if(nivel != dimension){
 			
-			//this.nodes = new ArrayList<Nodo>();
+			this.nodes = new ArrayList<Nodo>();
 			
 			for (int i = 0; i < caracteres.length; i++) {
 				
@@ -118,11 +120,12 @@ public class Nodo {
 		if(nivel == cadena.length()){
 			
 			//System.out.println("C: " + this.letra + "; "+this.valor);
-			return this.valor;
+			return getValor();
 		}else{
 			
 			for (Nodo a: nodes) {
 				
+				//Si la letra del nodo es igual que la que hay para ese nivel
 				if(a.getLetra() == cadena.charAt(nivel)){
 					
 					//System.out.println("C: " + this.letra + "; "+this.valor);
@@ -132,7 +135,54 @@ public class Nodo {
 		}
 		return 0;
 	}
+	
+	public Nodo getEsto(String cadena){
 
+		if(nivel == cadena.length()){
+			
+			//System.out.println("C: " + this.letra + "; "+this.valor);
+			return this;
+		}else{
+			
+			if(nodes != null){
+				
+				for (Nodo a: nodes) {
+					
+					//Si la letra del nodo es igual que la que hay para ese nivel
+					if(a.getLetra() == cadena.charAt(nivel)){
+						
+						//System.out.println("C: " + this.letra + "; "+this.valor);
+						return a.getEsto(cadena);
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Devuelve una letra aleatoria entre sus subnodos
+	 * @return
+	 */
+	public String getRandom(){
+
+		double alea = Math.random() * getValor();
+		double acumula = 0;
+		
+		for (Nodo a: nodes){
+			
+			if(acumula < alea){	
+				
+				acumula += a.getValor();
+			}
+			else{
+				return String.valueOf(a.getLetra());
+			}
+		}
+		return "";
+	}
+
+	
 	public char getLetra() {
 		return letra;
 	}
@@ -140,19 +190,9 @@ public class Nodo {
 	public void setLetra(char letra) {
 		this.letra = letra;
 	}
-
-	public int getNivel() {
-		return nivel;
-	}
-
-	public void setNivel(int nivel) {
-		this.nivel = nivel;
-	}
-	public int getValor() {
-		return valor;
-	}
-	public void setValor(int valor) {
-		this.valor = valor;
+	public int getValor(){
+		
+		return this.valor;
 	}
 
 }

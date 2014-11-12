@@ -157,6 +157,7 @@ public class Generador {
 		}
 		return matriz;
 	}
+	
 	public static String nivelCero(char[] caracteres, double tamano){
 		
 		String fin = "";
@@ -177,27 +178,25 @@ public class Generador {
 		 * Scanner in = new Scanner(System.in);
 		 * System.out.print("Refinamiento: "); int refinamiento = in.nextInt();
 		 */
+		
 		StringBuilder texto = leerTexto("galdos.txt");
-
 		HashMap<Character, Integer> mapa = crearHash(texto);
 		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto, mapa);
 
 		char[] caracteres = pasoAChar(mapa);
-
 		//char[] caracteres = {'a', 'b', 'c'};
 
 		long startTime = System.currentTimeMillis();
-		
-		Nodo.dimension = 4;
-
-		//Nodo raiz = new Nodo(caracteres);
-
-		//rellenamatriz(texto, mapita, raiz);
-		
-		//System.out.println(raiz.get("ser "));
-		System.out.println(nivelCero(caracteres, 2000));
-		
+		Nodo raiz = new Nodo(caracteres, 3);
 		long endTime = System.currentTimeMillis();
+		
+		rellenamatriz(texto, mapita, raiz);
+		
+		//System.out.println(raiz.get("rea"));
+		//System.out.println(nivelCero(caracteres, 100));
+		
+		System.out.println(raiz.getEsto("¡fm").getValor());
+		
 		System.out.println("Tiempo: " + (endTime - startTime) + " ms");
 
 	}
