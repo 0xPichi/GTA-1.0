@@ -194,5 +194,14 @@ public class Nodo {
 		
 		return this.valor;
 	}
+	
+	public ArrayList<Nodo> getnodes(){
+		
+		return this.nodes;
+	}
+	
+	public int getNivel(){
+		return this.nivel;
+	}
 
 }
