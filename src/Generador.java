@@ -152,7 +152,7 @@ public class Generador {
 					}
 				}
 				// System.out.println(cadena);
-				matriz.set(cadena, matriz.get(cadena) + 1);
+				matriz.set(cadena);
 				cadena = "";
 			}
 		}
@@ -172,7 +172,7 @@ public class Generador {
 
 		return fin;
 	}
-
+/*
 	public static void aleatorios( Nodo matriz,int numcaracteres) {
 		int aux = 0;
 		int suma_valores = 0;
@@ -195,18 +195,18 @@ public class Generador {
 				}
 				else{continue;}
 			}
-			aleatorios(lista.get(j), numcaracteres-1);
+			aleatorios(lista.get(j-1), numcaracteres-1);
 		}
 			
 	}
-
+*/
 	public static void main(String[] args) {
 
 		/*
 		 * Scanner in = new Scanner(System.in);
 		 * System.out.print("Refinamiento: "); int refinamiento = in.nextInt();
 		 */
-
+		
 		StringBuilder texto = leerTexto("galdos.txt");
 		HashMap<Character, Integer> mapa = crearHash(texto);
 		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto,
@@ -216,18 +216,18 @@ public class Generador {
 		// char[] caracteres = {'a', 'b', 'c'};
 
 		long startTime = System.currentTimeMillis();
-		for (int i = 0; i<caracteres.length;i++){
-			System.out.print(caracteres[i] + " ");
-		}
+		
 		Nodo raiz = new Nodo(caracteres, 3);
 		long endTime = System.currentTimeMillis();
 
 		rellenamatriz(texto, mapita, raiz);
-		String random_text = "";
+		//String random_text = "";
 		//aleatorios(raiz, 200);
-
-		// System.out.println(raiz.get("rea"));
-		// System.out.println(nivelCero(caracteres, 100));
+		System.out.println("caracteres: " + caracteres.length);
+		
+		System.out.println(raiz.get("abe"));
+		
+		System.out.println(nivelCero(caracteres, 100));
 
 		System.out.println("Tiempo: " + (endTime - startTime) + " ms");
 

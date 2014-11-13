@@ -1,10 +1,8 @@
-import java.util.ArrayList;
-
 public class Nodo {
 
 	private char letra;
 	private int valor;
-	public ArrayList<Nodo> nodes = null;
+	private Nodo[] nodes = null;
 	private int nivel;
 	
 	public static int dimension;
@@ -21,13 +19,12 @@ public class Nodo {
 		Nodo.caracteres = caracteres;
 		this.letra = '\u0000';
 		this.nivel = 0;
-		this.nodes = new ArrayList<Nodo>();
+		this.nodes = new Nodo[caracteres.length];
 		
 		for (int i = 0; i < caracteres.length; i++) {
 
-			this.nodes.add(new Nodo(nivel + 1, caracteres[i]));
+			nodes[i] = new Nodo(nivel + 1, caracteres[i]);
 		}
-
 	}
 	
 	/**
@@ -50,18 +47,17 @@ public class Nodo {
 			espacio += espacio;
 		}		
 		System.out.println(espacio +"C: " + letra + "; "+valor);
-		*/		
+		*/
 		if(nivel != dimension){
 			
-			this.nodes = new ArrayList<Nodo>();
+			this.nodes = new Nodo[caracteres.length];
 			
 			for (int i = 0; i < caracteres.length; i++) {
 				
-				this.nodes.add(new Nodo(nivel + 1, caracteres[i]));		
+				nodes[i] = new Nodo(nivel + 1, caracteres[i]);		
 			}
 			
 		}else{
-			
 			this.nodes = null;
 		}
 	}
@@ -91,21 +87,22 @@ public class Nodo {
 	 * @param cadena 
 	 * @param valor
 	 */
-	public void set(String cadena, int valor){
+	public void set(String cadena){
 
 		if(nivel == cadena.length()){
 			
-			this.valor = valor;
+			this.valor += 1;
 		}else{
 			
 			for (Nodo a: nodes) {
 				
 				if(a.getLetra() == cadena.charAt(nivel)){
 					
-					a.set(cadena, valor);
+					a.set(cadena);
+					this.valor += 1;
 				}
 			}
-			this.valor += valor;
+			
 		}
 	}
 	/**
@@ -119,7 +116,7 @@ public class Nodo {
 
 		if(nivel == cadena.length()){
 			
-			//System.out.println("C: " + this.letra + "; "+this.valor);
+			System.out.println("C: " + this.letra + "; "+this.valor);
 			return getValor();
 		}else{
 			
@@ -128,7 +125,7 @@ public class Nodo {
 				//Si la letra del nodo es igual que la que hay para ese nivel
 				if(a.getLetra() == cadena.charAt(nivel)){
 					
-					//System.out.println("C: " + this.letra + "; "+this.valor);
+					System.out.println("C: " + this.letra + "; "+this.valor);
 					return a.get(cadena);
 				}
 			}
@@ -195,7 +192,7 @@ public class Nodo {
 		return this.valor;
 	}
 	
-	public ArrayList<Nodo> getnodes(){
+	public Nodo[] getnodes(){
 		
 		return this.nodes;
 	}
