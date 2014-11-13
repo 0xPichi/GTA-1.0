@@ -172,41 +172,44 @@ public class Generador {
 
 		return fin;
 	}
-/*
-	public static void aleatorios( Nodo matriz,int numcaracteres) {
-		int aux = 0;
-		int suma_valores = 0;
-		int j;
+
+	public static void aleatorios(Nodo matriz, int numcaracteres,
+			String random_text) {
+		Nodo lista[] = matriz.getnodes();
+		int sumaValores = 0;
+		int sumaAuxiliar = 0;
+		int j = 0;
 		double aleatorio = 0;
-		int i ;
-		ArrayList<Nodo> lista = matriz.getnodes();
-		while(Nodo.dimension != matriz.getNivel()){
-			for (i = 0; i < lista.size(); i++) {
-				suma_valores += lista.get(i).getValor();
-				// System.out.println(lista.size());
-				// System.out.println(lista.get(i).getValor());
-			}
-			aleatorio = Math.random() * suma_valores;
-			for (j = 0; j < lista.size(); j++) {
-				aux += lista.get(j).getValor();
-				if (aux >= aleatorio) {
-					System.out.print(lista.get(j).getLetra());
-					
+		do {
+			if (Nodo.dimension != matriz.getNivel()) {
+				for (int i = 0; i < lista.length; i++) {
+					sumaValores += lista[i].getValor();
+					System.out.println(sumaValores);
 				}
-				else{continue;}
+				aleatorio = Math.random()*sumaValores;
+				for (j = 0; j < lista.length; j++) {
+					sumaAuxiliar += lista[j].getValor();
+					if (sumaAuxiliar >= aleatorio) {
+						//random_text = random_text + lista[j].getLetra();
+						//System.out.println(lista[j].getLetra());
+						numcaracteres--;
+						break;
+					}
+				}
+			} else {
+				aleatorios(lista[j], numcaracteres, random_text);
 			}
-			aleatorios(lista.get(j-1), numcaracteres-1);
-		}
-			
+		} while (numcaracteres != 0);
+		//System.out.println(random_text);
 	}
-*/
+
 	public static void main(String[] args) {
 
 		/*
 		 * Scanner in = new Scanner(System.in);
 		 * System.out.print("Refinamiento: "); int refinamiento = in.nextInt();
 		 */
-		
+
 		StringBuilder texto = leerTexto("galdos.txt");
 		HashMap<Character, Integer> mapa = crearHash(texto);
 		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto,
@@ -216,18 +219,19 @@ public class Generador {
 		// char[] caracteres = {'a', 'b', 'c'};
 
 		long startTime = System.currentTimeMillis();
-		
+
 		Nodo raiz = new Nodo(caracteres, 3);
 		long endTime = System.currentTimeMillis();
 
 		rellenamatriz(texto, mapita, raiz);
-		//String random_text = "";
-		//aleatorios(raiz, 200);
-		System.out.println("caracteres: " + caracteres.length);
-		
-		System.out.println(raiz.get("abe"));
-		
-		System.out.println(nivelCero(caracteres, 100));
+		String random_text = "";
+		aleatorios(raiz, 200, random_text);
+
+		// System.out.println("caracteres: " + caracteres.length);
+
+		// System.out.println(raiz.get("e"));
+
+		// System.out.println(nivelCero(caracteres, 100));
 
 		System.out.println("Tiempo: " + (endTime - startTime) + " ms");
 
