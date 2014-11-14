@@ -173,34 +173,27 @@ public class Generador {
 		return fin;
 	}
 
-	public static void aleatorios(Nodo matriz, int numcaracteres,
-			String random_text) {
-		Nodo lista[] = matriz.getnodes();
-		int sumaValores = 0;
-		int sumaAuxiliar = 0;
-		int j = 0;
-		double aleatorio = 0;
-		do {
-			if (Nodo.dimension != matriz.getNivel()) {
-				for (int i = 0; i < lista.length; i++) {
-					sumaValores += lista[i].getValor();
-					System.out.println(sumaValores);
-				}
-				aleatorio = Math.random()*sumaValores;
-				for (j = 0; j < lista.length; j++) {
-					sumaAuxiliar += lista[j].getValor();
-					if (sumaAuxiliar >= aleatorio) {
-						//random_text = random_text + lista[j].getLetra();
-						//System.out.println(lista[j].getLetra());
-						numcaracteres--;
-						break;
-					}
-				}
-			} else {
-				aleatorios(lista[j], numcaracteres, random_text);
+	public static void aleatorios(Nodo matriz, String random_text) {
+		if (matriz.getNivel() < Nodo.dimension) {
+			Nodo lista[] = matriz.getnodes();
+			int sumaValores = 0;
+			int sumaAuxiliar = 0;
+			int j = 0;
+			double aleatorio = 0;
+			for (int i = 0; i < lista.length; i++) {
+				sumaValores += lista[i].getValor();
 			}
-		} while (numcaracteres != 0);
-		//System.out.println(random_text);
+			aleatorio = Math.random() * sumaValores;
+			for (j = 0; j < lista.length; j++) {
+				sumaAuxiliar += lista[j].getValor();
+				if (sumaAuxiliar >= aleatorio) {
+					System.out.print(lista[j].getLetra());
+					aleatorios(lista[j], random_text);
+					break;
+				}
+			}
+		}
+
 	}
 
 	public static void main(String[] args) {
@@ -220,19 +213,23 @@ public class Generador {
 
 		long startTime = System.currentTimeMillis();
 
-		Nodo raiz = new Nodo(caracteres, 3);
+		Nodo raiz = new Nodo(caracteres, 4);
 		long endTime = System.currentTimeMillis();
 
 		rellenamatriz(texto, mapita, raiz);
 		String random_text = "";
-		aleatorios(raiz, 200, random_text);
-
+		int caracteres_escritos = 0;
+		int numcaracteres = 200;
+		while(caracteres_escritos < numcaracteres){
+		aleatorios(raiz, random_text);
+		caracteres_escritos += Nodo.dimension;
+		}
 		// System.out.println("caracteres: " + caracteres.length);
 
 		// System.out.println(raiz.get("e"));
 
 		// System.out.println(nivelCero(caracteres, 100));
-
+		System.out.println();
 		System.out.println("Tiempo: " + (endTime - startTime) + " ms");
 
 	}
