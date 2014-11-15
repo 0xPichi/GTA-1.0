@@ -181,12 +181,12 @@ public class Generador {
 		return fin;
 	}
 
-	public void aleatorios2(Nodo matriz) {
-
+	public void aleatorios(Nodo matriz) {
+		
 		double aleatorio = Math.random() * matriz.getValor();
 		double acumulado = 0;
-
-		// No estamos en el ultimo nivel
+		
+		// Antes de llegar al penúltimo nivel
 		if (matriz.getNivel() + 1 < Nodo.dimension) {
 
 			// Primer nivel: Solo coge la ultima letra que hay escrita
@@ -194,22 +194,24 @@ public class Generador {
 
 				Nodo elegido = null;
 
+				//Recorre los subNodos de ese Nodo
 				for (int i = 0; i < matriz.nodes.length; i++) {
 
-					if (matriz.nodes[i].getLetra() == textito_final
-							.charAt(textito_final.length() - 1)) {
+					// Si la letra al recorrer los nodos = ultima letra del StringBuilder
+					if (matriz.nodes[i].getLetra() == 
+							textito_final.charAt(textito_final.length() - 1)) {
 
 						// System.out.print(matriz.nodes[i].getLetra());
 						elegido = matriz.nodes[i];
 						break;
 					}
 				}
-				aleatorios2(elegido);
+				aleatorios(elegido);
 
 				// Demas niveles
 			} else {
 				Nodo elegido = null;
-
+				
 				// Busca, teniendo en cuenta las probabilidades, la siguiente
 				// letra
 				for (int i = 0; i < matriz.nodes.length; i++) {
@@ -222,8 +224,18 @@ public class Generador {
 						elegido = matriz.nodes[i];
 						break;
 					}
+					
+					// En caso de que llege al final, al usar Math.Random()
+					// Los decimales tambien les tiene en cuenta al comparar
+					// y no lo detecta con el "if" anterior. De esta forma
+					// evitamos que mande la matriz vacia.
+					if(i == matriz.nodes.length - 1){
+						
+						textito_final.append(matriz.nodes[i].getLetra());
+						elegido = matriz.nodes[i];
+					}
 				}
-				aleatorios2(elegido);
+				aleatorios(elegido);
 			}
 
 			// Penultimo nivel
@@ -238,11 +250,15 @@ public class Generador {
 					textito_final.append(matriz.nodes[i].getLetra());
 					break;
 				}
+				if(i == matriz.nodes.length - 1){
+					textito_final.append(matriz.nodes[i].getLetra());
+				}
 			}
 		}
 	}
 
 	public static void main(String[] args) {
+		
 		Scanner in = new Scanner(System.in);
 		System.out.println("BIENVENIDO AL GENERADOR DE TEXTOS ALEATORIOS" + "\n");
 		System.out.print("Seleccione el texto: ");
@@ -251,6 +267,7 @@ public class Generador {
 		int refinamiento = in.nextInt();
 		System.out.print("Introduzca el numero de caracteres que desea generar: ");
 		int numcaracteres = in.nextInt();
+		in.close();
 
 		Generador gta = new Generador();
 		StringBuilder texto_Completo = gta.leerTexto(texto);
@@ -259,24 +276,29 @@ public class Generador {
 		char[] caracteres = pasoAChar(mapa);
 
 		if (refinamiento == 0) {
+			
 			String random_cero = nivelCero(caracteres, numcaracteres);
 			System.out.println(random_cero);
 		} else {
-			long startTime = System.currentTimeMillis();
-
+			
+			//long startTime = System.currentTimeMillis();
+			//long endTime = System.currentTimeMillis();
+			
 			Nodo raiz = new Nodo(caracteres, refinamiento);
-			long endTime = System.currentTimeMillis();
-
 			rellenamatriz(texto_Completo, mapita, raiz);
+			
+			while (gta.textito_final.length() < numcaracteres) {
 
-			while (gta.textito_final.length() <= numcaracteres) {
-				gta.aleatorios2(raiz);
+				gta.aleatorios(raiz);
 				
 			}
-			gta.textito_final.deleteCharAt(numcaracteres-1);
+			//gta.textito_final.deleteCharAt(numcaracteres-1);
 			System.out.print(gta.textito_final);
-
-			System.out.println("\nTiempo en crear la matriz: " + (endTime - startTime) + " ms");
+			
+			//Coger el número justo de caracteres
+			gta.textito_final.delete(numcaracteres, gta.textito_final.length());
+			
+			System.out.println("Tamaño: " + gta.textito_final.length());
 		}
 
 	}
