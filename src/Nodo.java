@@ -2,7 +2,7 @@ public class Nodo {
 
 	private char letra;
 	private int valor;
-	private Nodo[] nodes = null;
+	public Nodo[] nodes = null;
 	private int nivel;
 	
 	public static int dimension;
@@ -155,28 +155,6 @@ public class Nodo {
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * Devuelve una letra aleatoria entre sus subnodos
-	 * @return
-	 */
-	public String getRandom(){
-
-		double alea = Math.random() * getValor();
-		double acumula = 0;
-		
-		for (Nodo a: nodes){
-			
-			if(acumula < alea){	
-				
-				acumula += a.getValor();
-			}
-			else{
-				return String.valueOf(a.getLetra());
-			}
-		}
-		return "";
 	}
 
 	

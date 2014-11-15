@@ -15,7 +15,14 @@ public class Generador {
 	 * @param nombre
 	 * @return StringBuilder
 	 */
-	public static StringBuilder leerTexto(String nombre) {
+	private StringBuilder textito_final = new StringBuilder();
+
+	public Generador() {
+
+		textito_final.append("a");
+	}
+
+	public StringBuilder leerTexto(String nombre) {
 
 		StringBuilder txt = new StringBuilder();
 
@@ -48,7 +55,8 @@ public class Generador {
 	 * @param texto
 	 * @return HashMap<Character, Integer>
 	 */
-	private static HashMap<Character, Integer> crearHash(StringBuilder texto) {
+	private static HashMap<Character, Integer> distintosCaracteres(
+			StringBuilder texto) {
 
 		HashMap<Character, Integer> mapa = new HashMap<Character, Integer>();
 
@@ -57,14 +65,14 @@ public class Generador {
 			try {
 				// Suma 1 al total de veces que se repite ese caracter
 				// (mapa.put('caracter', veces + 1))
-				if ((int) texto.charAt(i) > 31) {
+				if (((int) texto.charAt(i) > 31)
+						|| ((int) texto.charAt(i) == 10)) {
 					mapa.put(texto.charAt(i), mapa.get(texto.charAt(i)) + 1);
 				}
 
 			} catch (NullPointerException e) {
 
 				// El caracter aparece por primera vez, veces = 1
-
 				mapa.put(texto.charAt(i), 1);
 			}
 		}
@@ -173,64 +181,93 @@ public class Generador {
 		return fin;
 	}
 
-	public static void aleatorios(Nodo matriz, String random_text) {
-		if (matriz.getNivel() < Nodo.dimension) {
-			Nodo lista[] = matriz.getnodes();
-			int sumaValores = 0;
-			int sumaAuxiliar = 0;
-			int j = 0;
-			double aleatorio = 0;
-			for (int i = 0; i < lista.length; i++) {
-				sumaValores += lista[i].getValor();
+	public void aleatorios2(Nodo matriz) {
+
+		double aleatorio = Math.random() * matriz.getValor();
+		double acumulado = 0;
+
+		// No estamos en el ultimo nivel
+		if (matriz.getNivel() + 1 < Nodo.dimension) {
+
+			// Primer nivel: Solo coge la ultima letra que hay escrita
+			if (matriz.getNivel() == 0) {
+
+				Nodo elegido = null;
+
+				for (int i = 0; i < matriz.nodes.length; i++) {
+
+					if (matriz.nodes[i].getLetra() == textito_final
+							.charAt(textito_final.length() - 1)) {
+
+						// System.out.print(matriz.nodes[i].getLetra());
+						elegido = matriz.nodes[i];
+						break;
+					}
+				}
+				aleatorios2(elegido);
+
+				// Demas niveles
+			} else {
+				Nodo elegido = null;
+
+				// Busca, teniendo en cuenta las probabilidades, la siguiente
+				// letra
+				for (int i = 0; i < matriz.nodes.length; i++) {
+
+					acumulado += matriz.nodes[i].getValor();
+
+					if (acumulado >= aleatorio) {
+
+						textito_final.append(matriz.nodes[i].getLetra());
+						elegido = matriz.nodes[i];
+						break;
+					}
+				}
+				aleatorios2(elegido);
 			}
-			aleatorio = Math.random() * sumaValores;
-			for (j = 0; j < lista.length; j++) {
-				sumaAuxiliar += lista[j].getValor();
-				if (sumaAuxiliar >= aleatorio) {
-					System.out.print(lista[j].getLetra());
-					aleatorios(lista[j], random_text);
+
+			// Penultimo nivel
+		} else {
+
+			for (int i = 0; i < matriz.nodes.length; i++) {
+
+				acumulado += matriz.nodes[i].getValor();
+
+				if (acumulado >= aleatorio) {
+
+					textito_final.append(matriz.nodes[i].getLetra());
 					break;
 				}
 			}
 		}
-
 	}
 
 	public static void main(String[] args) {
 
-		/*
-		 * Scanner in = new Scanner(System.in);
-		 * System.out.print("Refinamiento: "); int refinamiento = in.nextInt();
-		 */
+		Generador gta = new Generador();
 
-		StringBuilder texto = leerTexto("galdos.txt");
-		HashMap<Character, Integer> mapa = crearHash(texto);
-		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto,
-				mapa);
+		StringBuilder texto_Completo = gta.leerTexto("galdos.txt");
+		HashMap<Character, Integer> mapa = distintosCaracteres(texto_Completo);
+		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto_Completo, mapa);
 
 		char[] caracteres = pasoAChar(mapa);
-		// char[] caracteres = {'a', 'b', 'c'};
 
 		long startTime = System.currentTimeMillis();
 
-		Nodo raiz = new Nodo(caracteres, 4);
+		Nodo raiz = new Nodo(caracteres, 3);
 		long endTime = System.currentTimeMillis();
 
-		rellenamatriz(texto, mapita, raiz);
-		String random_text = "";
-		int caracteres_escritos = 0;
+		rellenamatriz(texto_Completo, mapita, raiz);
+
 		int numcaracteres = 200;
-		while(caracteres_escritos < numcaracteres){
-		aleatorios(raiz, random_text);
-		caracteres_escritos += Nodo.dimension;
+
+		while (gta.textito_final.length() < numcaracteres) {
+			gta.aleatorios2(raiz);
 		}
-		// System.out.println("caracteres: " + caracteres.length);
 
-		// System.out.println(raiz.get("e"));
+		System.out.println(gta.textito_final);
 
-		// System.out.println(nivelCero(caracteres, 100));
-		System.out.println();
-		System.out.println("Tiempo: " + (endTime - startTime) + " ms");
+		System.out.println("\nTiempo en crear la matriz: " + (endTime - startTime) + " ms");
 
 	}
 
