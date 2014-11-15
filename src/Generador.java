@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 public class Generador {
 
@@ -89,8 +90,7 @@ public class Generador {
 	 * @return HashMap<Character, ArrayList<Integer>> Por ejemplo: caracter 'a',
 	 *         posiciones {23, 45, 103}
 	 */
-	private static HashMap<Character, ArrayList<Integer>> charPositions(
-			StringBuilder texto, HashMap<Character, Integer> map) {
+	private static HashMap<Character, ArrayList<Integer>> charPositions(StringBuilder texto, HashMap<Character, Integer> map) {
 
 		HashMap<Character, ArrayList<Integer>> mapPosition = new HashMap<Character, ArrayList<Integer>>();
 
@@ -243,31 +243,41 @@ public class Generador {
 	}
 
 	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		System.out.println("BIENVENIDO AL GENERADOR DE TEXTOS ALEATORIOS" + "\n");
+		System.out.print("Seleccione el texto: ");
+		String texto = in.nextLine();
+		System.out.print("Introduzca el nivel de refinamiento: ");
+		int refinamiento = in.nextInt();
+		System.out.print("Introduzca el numero de caracteres que desea generar: ");
+		int numcaracteres = in.nextInt();
 
 		Generador gta = new Generador();
-
-		StringBuilder texto_Completo = gta.leerTexto("galdos.txt");
+		StringBuilder texto_Completo = gta.leerTexto(texto);
 		HashMap<Character, Integer> mapa = distintosCaracteres(texto_Completo);
 		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto_Completo, mapa);
-
 		char[] caracteres = pasoAChar(mapa);
 
-		long startTime = System.currentTimeMillis();
+		if (refinamiento == 0) {
+			String random_cero = nivelCero(caracteres, numcaracteres);
+			System.out.println(random_cero);
+		} else {
+			long startTime = System.currentTimeMillis();
 
-		Nodo raiz = new Nodo(caracteres, 3);
-		long endTime = System.currentTimeMillis();
+			Nodo raiz = new Nodo(caracteres, refinamiento);
+			long endTime = System.currentTimeMillis();
 
-		rellenamatriz(texto_Completo, mapita, raiz);
+			rellenamatriz(texto_Completo, mapita, raiz);
 
-		int numcaracteres = 200;
+			while (gta.textito_final.length() <= numcaracteres) {
+				gta.aleatorios2(raiz);
+				
+			}
+			gta.textito_final.deleteCharAt(numcaracteres-1);
+			System.out.print(gta.textito_final);
 
-		while (gta.textito_final.length() < numcaracteres) {
-			gta.aleatorios2(raiz);
+			System.out.println("\nTiempo en crear la matriz: " + (endTime - startTime) + " ms");
 		}
-
-		System.out.println(gta.textito_final);
-
-		System.out.println("\nTiempo en crear la matriz: " + (endTime - startTime) + " ms");
 
 	}
 
