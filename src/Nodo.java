@@ -39,15 +39,6 @@ public class Nodo {
 		this.nivel = nivel;
 		this.letra = letra;		
 		
-		//System.out.printl super chulo para que parezca un arbol
-		/*
-		String espacio = "  ";
-		for (int i = 0; i < nivel; i++) {
-			
-			espacio += espacio;
-		}		
-		System.out.println(espacio +"C: " + letra + "; "+valor);
-		*/
 		if(nivel != dimension){
 			
 			this.nodes = new Nodo[caracteres.length];

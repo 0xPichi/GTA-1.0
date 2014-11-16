@@ -6,24 +6,57 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Scanner;
 
 public class Generador {
 
+	private StringBuilder textito_final = new StringBuilder();
+
+	public Generador(String texto, int refinamiento, int numcaracteres) {
+
+		/* StringBuilder con el texto leido desde el fichero */
+		StringBuilder texto_Completo = leerTexto(texto);
+		
+		/* Mapa con todos los caracteres y las veces que se repiten */
+		HashMap<Character, Integer> mapa = distintosCaracteres(texto_Completo);
+		
+		/* Mapa que asigna a cada caracter la pisicion en la que se encuentra */
+		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto_Completo, mapa);
+		
+		/* Array de caracteres */
+		char[] caracteres = pasoAChar(mapa);		
+
+		/* Si se ha escogido como refinamiento = 0, se cogen solo caracteres aleatorios */
+		if (refinamiento == 0) {
+			
+			textito_final = nivelCero(caracteres, numcaracteres);
+		} else {
+			
+			/* Introducimos como primer caracter una letra aleatoria */
+			textito_final.append(nivelCero(caracteres, 1));
+			
+			/* Crea un objeto Nodo "raiz" al que le vamos a dar la dimension
+			 * dependiendo del refinamiento deseado
+			 */
+			Nodo raiz = new Nodo(caracteres, refinamiento);
+			rellenamatriz(texto_Completo, mapita, raiz);
+			
+			while (textito_final.length() < numcaracteres) {
+
+				aleatorios(raiz);
+				
+			}
+			//Coger el número justo de caracteres
+			textito_final.delete(numcaracteres, textito_final.length());
+		}
+	}
+
 	/**
-	 * Lee un texto y lo almacena en un objeto de la clase StringBuilder
+	 * Lee un fichero y lo almacena en un objeto de la clase StringBuilder
 	 * 
 	 * @param nombre
 	 * @return StringBuilder
 	 */
-	private StringBuilder textito_final = new StringBuilder();
-
-	public Generador() {
-
-		textito_final.append("a");
-	}
-
-	public StringBuilder leerTexto(String nombre) {
+	private StringBuilder leerTexto(String nombre) {
 
 		StringBuilder txt = new StringBuilder();
 
@@ -56,7 +89,7 @@ public class Generador {
 	 * @param texto
 	 * @return HashMap<Character, Integer>
 	 */
-	private static HashMap<Character, Integer> distintosCaracteres(
+	private HashMap<Character, Integer> distintosCaracteres(
 			StringBuilder texto) {
 
 		HashMap<Character, Integer> mapa = new HashMap<Character, Integer>();
@@ -79,6 +112,40 @@ public class Generador {
 		}
 		return mapa;
 	}
+	/*
+	private char[] distintosCaracteres2(StringBuilder texto){
+		
+		char[] caracteres = null;
+		String stringChar = "";
+		boolean encontrado = false;
+		
+		//Recorremos todo el texto
+		for (int i = 0; i < texto.length(); i++) {
+			
+			if (((int) texto.charAt(i) > 31)
+					|| ((int) texto.charAt(i) == 10)) {
+				for (int j = 0; j < stringChar.length(); j++) {
+					
+					if(texto.charAt(i) == stringChar.charAt(j)){
+						encontrado = true;
+					}
+				}
+				if(!encontrado){
+					stringChar += texto.charAt(i);
+				}
+				encontrado = false;
+			}
+		}
+		
+		caracteres = new char[stringChar.length()];
+		
+		for (int k = 0; k < stringChar.length(); k++) {
+			
+			caracteres[k] = stringChar.charAt(k);
+		}
+		
+		return caracteres;
+	}*/
 
 	/**
 	 * Metodo que recibe un StringBuilder y un HashMap, en el cual estan las
@@ -90,7 +157,7 @@ public class Generador {
 	 * @return HashMap<Character, ArrayList<Integer>> Por ejemplo: caracter 'a',
 	 *         posiciones {23, 45, 103}
 	 */
-	private static HashMap<Character, ArrayList<Integer>> charPositions(StringBuilder texto, HashMap<Character, Integer> map) {
+	private HashMap<Character, ArrayList<Integer>> charPositions(StringBuilder texto, HashMap<Character, Integer> map) {
 
 		HashMap<Character, ArrayList<Integer>> mapPosition = new HashMap<Character, ArrayList<Integer>>();
 
@@ -120,7 +187,7 @@ public class Generador {
 		return mapPosition;
 	}
 
-	public static char[] pasoAChar(HashMap<Character, Integer> mapa) {
+	private char[] pasoAChar(HashMap<Character, Integer> mapa) {
 
 		char[] caracteres = new char[mapa.size()];
 		int posicion = 0;
@@ -133,7 +200,7 @@ public class Generador {
 		return caracteres;
 	}
 
-	public static Nodo rellenamatriz(StringBuilder texto,
+	private Nodo rellenamatriz(StringBuilder texto,
 			HashMap<Character, ArrayList<Integer>> mapa, Nodo matriz) {
 
 		char caracter;
@@ -159,7 +226,6 @@ public class Generador {
 
 					}
 				}
-				// System.out.println(cadena);
 				matriz.set(cadena);
 				cadena = "";
 			}
@@ -167,21 +233,21 @@ public class Generador {
 		return matriz;
 	}
 
-	public static String nivelCero(char[] caracteres, double tamano) {
+	private StringBuilder nivelCero(char[] caracteres, double tamano) {
 
-		String fin = "";
+		StringBuilder fin = new StringBuilder();
 		double aleatorio;
 
 		for (int i = 0; i < tamano; i++) {
 
 			aleatorio = Math.random() * caracteres.length;
-			fin += caracteres[(int) aleatorio];
+			fin.append(caracteres[(int) aleatorio]);
 		}
 
 		return fin;
 	}
 
-	public void aleatorios(Nodo matriz) {
+	private void aleatorios(Nodo matriz) {
 		
 		double aleatorio = Math.random() * matriz.getValor();
 		double acumulado = 0;
@@ -256,51 +322,10 @@ public class Generador {
 			}
 		}
 	}
-
-	public static void main(String[] args) {
+	
+	public StringBuilder getTextoGenerado(){
 		
-		Scanner in = new Scanner(System.in);
-		System.out.println("BIENVENIDO AL GENERADOR DE TEXTOS ALEATORIOS" + "\n");
-		System.out.print("Seleccione el texto: ");
-		String texto = in.nextLine();
-		System.out.print("Introduzca el nivel de refinamiento: ");
-		int refinamiento = in.nextInt();
-		System.out.print("Introduzca el numero de caracteres que desea generar: ");
-		int numcaracteres = in.nextInt();
-		in.close();
-
-		Generador gta = new Generador();
-		StringBuilder texto_Completo = gta.leerTexto(texto);
-		HashMap<Character, Integer> mapa = distintosCaracteres(texto_Completo);
-		HashMap<Character, ArrayList<Integer>> mapita = charPositions(texto_Completo, mapa);
-		char[] caracteres = pasoAChar(mapa);
-
-		if (refinamiento == 0) {
-			
-			String random_cero = nivelCero(caracteres, numcaracteres);
-			System.out.println(random_cero);
-		} else {
-			
-			//long startTime = System.currentTimeMillis();
-			//long endTime = System.currentTimeMillis();
-			
-			Nodo raiz = new Nodo(caracteres, refinamiento);
-			rellenamatriz(texto_Completo, mapita, raiz);
-			
-			while (gta.textito_final.length() < numcaracteres) {
-
-				gta.aleatorios(raiz);
-				
-			}
-			//gta.textito_final.deleteCharAt(numcaracteres-1);
-			System.out.print(gta.textito_final);
-			
-			//Coger el número justo de caracteres
-			gta.textito_final.delete(numcaracteres, gta.textito_final.length());
-			
-			System.out.println("Tamaño: " + gta.textito_final.length());
-		}
-
+		return this.textito_final;
 	}
 
 }
