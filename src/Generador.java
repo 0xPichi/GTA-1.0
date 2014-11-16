@@ -249,7 +249,15 @@ public class Generador {
 
 	private void aleatorios(Nodo matriz) {
 		
-		double aleatorio = Math.random() * matriz.getValor();
+		/* Calculamos la suma de sus hijos */
+		double valores = 0;
+		
+		for (int i = 0; i < matriz.nodes.length; i++) {
+			
+			valores += matriz.nodes[i].getValor();
+		}
+		/* Aleatorio entre 0 y la suma total */
+		double aleatorio = Math.random() * valores;
 		double acumulado = 0;
 		
 		// Antes de llegar al penúltimo nivel
@@ -286,20 +294,11 @@ public class Generador {
 
 					if (acumulado >= aleatorio) {
 
+						// System.out.println("Acum.: "+acumulado + "; Alea.: " + aleatorio + "; Valor: "+matriz.getValor());
 						textito_final.append(matriz.nodes[i].getLetra());
 						elegido = matriz.nodes[i];
 						break;
-					}
-					
-					// En caso de que llege al final, al usar Math.Random()
-					// Los decimales tambien les tiene en cuenta al comparar
-					// y no lo detecta con el "if" anterior. De esta forma
-					// evitamos que mande la matriz vacia.
-					if(i == matriz.nodes.length - 1){
-						
-						textito_final.append(matriz.nodes[i].getLetra());
-						elegido = matriz.nodes[i];
-					}
+					}					
 				}
 				aleatorios(elegido);
 			}
@@ -315,9 +314,6 @@ public class Generador {
 
 					textito_final.append(matriz.nodes[i].getLetra());
 					break;
-				}
-				if(i == matriz.nodes.length - 1){
-					textito_final.append(matriz.nodes[i].getLetra());
 				}
 			}
 		}

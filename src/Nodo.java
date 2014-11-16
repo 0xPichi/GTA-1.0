@@ -1,7 +1,7 @@
 public class Nodo {
 
 	private char letra;
-	private int valor;
+	private int valor = 0;
 	public Nodo[] nodes = null;
 	private int nivel;
 	
@@ -93,6 +93,7 @@ public class Nodo {
 					this.valor += 1;
 				}
 			}
+			
 			
 		}
 	}
