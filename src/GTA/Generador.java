@@ -190,6 +190,7 @@ public class Generador {
 			for (int b : a.getValue()) {
 
 				cadena += a.getKey();
+				ac = a.getKey();
 
 				for (int i = 1; i < Nodo.dimension; i++) {
 
