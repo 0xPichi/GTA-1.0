@@ -149,7 +149,7 @@ public class Generador {
 	 * buscar en el StringBuilder las posiciones en las que esta cada caracter
 	 * 
 	 * @param texto
-	 * @param map
+	 * @param mapa
 	 * @return HashMap<Character, ArrayList<Integer>> Por ejemplo: caracter 'a',
 	 *         posiciones {23, 45, 103}
 	 */
@@ -182,13 +182,13 @@ public class Generador {
 
 		String cadena = "";
 		char ac = 'b';
-		
+
+
 		for (Entry<Character, ArrayList<Integer>> a : mapa.entrySet()) {
-
+			//System.out.println(a.getValue());
 			long tiempoInicio = System.currentTimeMillis();
-
 			for (int b : a.getValue()) {
-
+				//System.out.println(a.getKey());
 				cadena += a.getKey();
 				ac = a.getKey();
 
@@ -208,7 +208,7 @@ public class Generador {
 			}
 
 			long tiempoFin = System.currentTimeMillis();
-			System.out.println("\nChar:" + ac + " Tiempo: "+ ( tiempoFin - tiempoInicio ) + " ms");
+			//System.out.println("\nChar:" + ac + " Tiempo: "+ ( tiempoFin - tiempoInicio ) + " ms");
 		}
 
 	}
