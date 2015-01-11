@@ -3,16 +3,13 @@ package GTA;
  *  Adrian Calvo Rojo 
  *  Sergio Delgado Alvarez
  */
- 
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.Scanner;
-import java.util.Map.Entry;
 
 public class Main {
 
 	public static void main(String[] args) {
-		
+	
 		Scanner in = new Scanner(System.in);
 		System.out.println("BIENVENIDO AL GENERADOR DE TEXTOS ALEATORIOS"
 				+ "\n");
@@ -31,8 +28,13 @@ public class Main {
 		System.out.print("\n" + gta.getTextoGenerado());
 
 		System.out.println("\nTiempo: "+ ( tiempoFin - tiempoInicio ) + " ms");
-		
 
+		/*
+		AdriayList<Integer> hola = new AdriayList<Integer>();
+		hola.add(23);
+		hola.add(10);
+		System.out.println(hola.getSize());System.out.println(hola.get(1));
+		*/
 	}
 
 }

@@ -1,6 +1,5 @@
 package GTA;
 
-import java.util.ArrayList;
 /* Hecho por:
  *  Adrian Calvo Rojo 
  *  Sergio Delgado Alvarez
@@ -10,7 +9,7 @@ public class Nodo {
 
 	private char letra;
 	private int valor = 0;
-	public ArrayList<Nodo> nodes = null;
+	public AdriayList<Nodo> nodes = null;
 	private int nivel;
 	
 	public static int dimension;
@@ -26,7 +25,7 @@ public class Nodo {
 		this.letra = '\u0000';
 		this.nivel = 0;
 		
-		nodes = new ArrayList<Nodo>();
+		nodes = new AdriayList<Nodo>();
 	}
 	
 	/**
@@ -41,24 +40,23 @@ public class Nodo {
 		this.nivel = nivel;
 		this.letra = letra;		
 					
-		this.nodes = new ArrayList<Nodo>();			
+		this.nodes = new AdriayList<Nodo>();			
 	
 	}
 	
 	public void set(String cadena){
 
 		if(nivel == cadena.length()){
-			
+			//System.out.println(cadena);
 			valor++;
 		}else{
 			
 			nodes.add(new Nodo(nivel + 1, cadena.charAt(nivel)));
-
-			for (Nodo a: nodes) {
+			for (int i = 0; i < nodes.getSize(); i++) {
 				
-				if(a.getLetra() == cadena.charAt(nivel)){
+				if(nodes.get(i).getLetra() == cadena.charAt(nivel)){
 					
-					a.set(cadena);
+					nodes.get(i).set(cadena);
 					valor++;
 					break;
 				}
@@ -66,34 +64,6 @@ public class Nodo {
 			
 		}
 	}
-	/**
-	 * Hace lo mismo que set, pero en este caso en vez de llegar y establecer el atributo "valor"
-	 * del objeto, lo que hace es recuperarlo.
-	 * 
-	 * @param cadena
-	 * @return
-	 */
-	public int get(String cadena){
-
-		if(nivel == cadena.length()){
-			
-			System.out.println("C: " + this.letra + "; "+this.valor);
-			return getValor();
-		}else{
-			
-			for (Nodo a: nodes) {
-				
-				//Si la letra del nodo es igual que la que hay para ese nivel
-				if(a.getLetra() == cadena.charAt(nivel)){
-					
-					System.out.println("C: " + this.letra + "; "+this.valor);
-					return a.get(cadena);
-				}
-			}
-		}
-		return 0;
-	}
-	
 	
 	public char getLetra() {
 		return letra;
@@ -106,7 +76,7 @@ public class Nodo {
 		return this.valor;
 	}
 	
-	public ArrayList<Nodo> getnodes(){
+	public AdriayList<Nodo> getnodes(){
 		return this.nodes;
 	}
 	

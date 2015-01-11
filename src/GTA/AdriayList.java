@@ -3,6 +3,7 @@ package GTA;
 import java.util.Arrays;
 
 public class AdriayList<E> {
+	
     private int size = 0;
     private static final int CAPACIDAD_DEFECTO = 10;
     private Object elementos[];
@@ -15,6 +16,8 @@ public class AdriayList<E> {
         if(size == elementos.length) {
             ensureCapa();
         }
+        elementos[size++] = elemento;
+
     }
 
     public void ensureCapa(){
@@ -22,7 +25,8 @@ public class AdriayList<E> {
         elementos = Arrays.copyOf(elementos, nuevoTamaño);
     }
 
-    public E get(int i){
+    @SuppressWarnings("unchecked")
+	public E get(int i){
         if(i>= size || i<0){
             throw new IndexOutOfBoundsException("Index" + i + ", Size" + i);
         }

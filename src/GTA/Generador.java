@@ -10,9 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class Generador {
 
@@ -27,7 +25,7 @@ public class Generador {
 		char[] caracteres = distintosCaracteres(texto_Completo);
 
 		// Mapa que asigna a cada caracter la pisicion en la que se encuentra
-		HashMap<Character, ArrayList<Integer>> mapita = charPositions(
+		HashMap<Character, AdriayList<Integer>> mapita = charPositions(
 				texto_Completo, caracteres);
 
 		/*
@@ -47,7 +45,11 @@ public class Generador {
 			 * dependiendo del refinamiento deseado
 			 */
 			Nodo raiz = new Nodo(caracteres, refinamiento);
+			
+			long tiempoInicio = System.currentTimeMillis();
 			rellenamatriz(texto_Completo, mapita, raiz);
+			long tiempoFin = System.currentTimeMillis();
+			System.out.println("Tiempo: "+ ( tiempoFin - tiempoInicio ) + " ms");
 			
 			while (textito_final.length() < numcaracteres) {
 
@@ -153,12 +155,12 @@ public class Generador {
 	 * @return HashMap<Character, ArrayList<Integer>> Por ejemplo: caracter 'a',
 	 *         posiciones {23, 45, 103}
 	 */
-	private HashMap<Character, ArrayList<Integer>> charPositions(
+	private HashMap<Character, AdriayList<Integer>> charPositions(
 			StringBuilder texto, char[] chars) {
 
-		HashMap<Character, ArrayList<Integer>> mapPosition = new HashMap<Character, ArrayList<Integer>>();
+		HashMap<Character, AdriayList<Integer>> mapPosition = new HashMap<Character, AdriayList<Integer>>();
 		char letra;
-		ArrayList<Integer> positions;
+		AdriayList<Integer> positions;
 
 		for (int position = 0; position < texto.length(); position++) {
 
@@ -166,7 +168,7 @@ public class Generador {
 			positions = mapPosition.get(letra);
 
 			if (positions == null) {
-				positions = new ArrayList<Integer>();
+				positions = new AdriayList<Integer>();
 			}
 
 			positions.add(position);
@@ -178,36 +180,35 @@ public class Generador {
 	}
 
 	private void rellenamatriz(StringBuilder texto,
-			HashMap<Character, ArrayList<Integer>> mapa, Nodo matriz) {
+			HashMap<Character, AdriayList<Integer>> mapa, Nodo matriz) {
 
 		String cadena = "";
-		char ac = 'b';
+		//char ac = 'b';
 
-
-		for (Entry<Character, ArrayList<Integer>> a : mapa.entrySet()) {
+		for (Character a : mapa.keySet()) {
 			//System.out.println(a.getValue());
-			long tiempoInicio = System.currentTimeMillis();
-			for (int b : a.getValue()) {
+			//long tiempoInicio = System.currentTimeMillis();
+			
+			for (int b = 0; b < mapa.get(a).getSize(); b++) {
 				//System.out.println(a.getKey());
-				cadena += a.getKey();
-				ac = a.getKey();
+				cadena += a;
+				//ac = a.getKey();
 
 				for (int i = 1; i < Nodo.dimension; i++) {
 
 					try {
-						cadena += texto.charAt(b + i);
+						cadena += texto.charAt(mapa.get(a).get(b) + i);
 
 					} catch (StringIndexOutOfBoundsException e) {
 						// Llega a la ultima posicion
 
 					}
 				}
-
 				matriz.set(cadena);
 				cadena = "";
 			}
 
-			long tiempoFin = System.currentTimeMillis();
+			//long tiempoFin = System.currentTimeMillis();
 			//System.out.println("\nChar:" + ac + " Tiempo: "+ ( tiempoFin - tiempoInicio ) + " ms");
 		}
 
@@ -232,9 +233,9 @@ public class Generador {
 		// Calculamos la suma de sus hijos
 		double valores = 0;
 
-		for (Nodo i : matriz.nodes) {
+		for (int j = 0; j < matriz.nodes.getSize(); j++) {
 
-			valores += i.getValor();
+			valores += matriz.nodes.get(j).getValor();
 		}
 		// Aleatorio entre 0 y la suma total
 		double aleatorio = Math.random() * valores;
@@ -249,15 +250,15 @@ public class Generador {
 				Nodo elegido = null;
 
 				// Recorre los subNodos de ese Nodo
-				for (Nodo i : matriz.nodes) {
+				for (int j = 0; j < matriz.nodes.getSize(); j++) {
 
 					// Si la letra al recorrer los nodos = ultima letra del
 					// StringBuilder
-					if (i.getLetra() == textito_final.charAt(textito_final
+					if (matriz.nodes.get(j).getLetra() == textito_final.charAt(textito_final
 							.length() - 1)) {
 
 						// System.out.print(matriz.nodes[i].getLetra());
-						elegido = i;
+						elegido = matriz.nodes.get(j);
 						break;
 					}
 				}
@@ -269,16 +270,17 @@ public class Generador {
 
 				// Busca, teniendo en cuenta las probabilidades, la siguiente
 				// letra
-				for (Nodo i : matriz.nodes) {
+				
+				for (int j = 0; j < matriz.nodes.getSize(); j++) {
 
-					acumulado += i.getValor();
+					acumulado += matriz.nodes.get(j).getValor();
 
 					if (acumulado >= aleatorio) {
 
 						// System.out.println("Acum.: "+acumulado + "; Alea.: "
 						// + aleatorio + "; Valor: "+matriz.getValor());
-						textito_final.append(i.getLetra());
-						elegido = i;
+						textito_final.append(matriz.nodes.get(j).getLetra());
+						elegido = matriz.nodes.get(j);
 						break;
 					}
 				}
@@ -288,13 +290,13 @@ public class Generador {
 			// Penultimo nivel
 		} else {
 
-			for (Nodo i : matriz.nodes) {
+			for (int j = 0; j < matriz.nodes.getSize(); j++) {
 
-				acumulado += i.getValor();
+				acumulado += matriz.nodes.get(j).getValor();
 
 				if (acumulado >= aleatorio) {
 
-					textito_final.append(i.getLetra());
+					textito_final.append(matriz.nodes.get(j).getLetra());
 					break;
 				}
 			}
