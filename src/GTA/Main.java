@@ -35,6 +35,7 @@ public class Main {
 		hola.add(10);
 		System.out.println(hola.getSize());System.out.println(hola.get(1));
 		*/
+		
 	}
 
 }

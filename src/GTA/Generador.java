@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class Generador {
 
@@ -23,10 +22,6 @@ public class Generador {
 
 		// Array con todos los caracteres
 		char[] caracteres = distintosCaracteres(texto_Completo);
-
-		// Mapa que asigna a cada caracter la pisicion en la que se encuentra
-		HashMap<Character, AdriayList<Integer>> mapita = charPositions(
-				texto_Completo, caracteres);
 
 		/*
 		 * Si se ha escogido como refinamiento = 0, se cogen solo caracteres
@@ -47,7 +42,7 @@ public class Generador {
 			Nodo raiz = new Nodo(caracteres, refinamiento);
 			
 			long tiempoInicio = System.currentTimeMillis();
-			rellenamatriz(texto_Completo, mapita, raiz);
+			rellenamatriz(texto_Completo, raiz);
 			long tiempoFin = System.currentTimeMillis();
 			System.out.println("Tiempo: "+ ( tiempoFin - tiempoInicio ) + " ms");
 			
@@ -145,59 +140,16 @@ public class Generador {
 		return chars;
 	}
 
-	/**
-	 * Metodo que recibe un StringBuilder y un HashMap, en el cual estan las
-	 * referencias de cada caracter y las veces que se repite, para despues
-	 * buscar en el StringBuilder las posiciones en las que esta cada caracter
-	 * 
-	 * @param texto
-	 * @param mapa
-	 * @return HashMap<Character, ArrayList<Integer>> Por ejemplo: caracter 'a',
-	 *         posiciones {23, 45, 103}
-	 */
-	private HashMap<Character, AdriayList<Integer>> charPositions(
-			StringBuilder texto, char[] chars) {
-
-		HashMap<Character, AdriayList<Integer>> mapPosition = new HashMap<Character, AdriayList<Integer>>();
-		char letra;
-		AdriayList<Integer> positions;
-
-		for (int position = 0; position < texto.length(); position++) {
-
-			letra = texto.charAt(position);
-			positions = mapPosition.get(letra);
-
-			if (positions == null) {
-				positions = new AdriayList<Integer>();
-			}
-
-			positions.add(position);
-			mapPosition.put(letra, positions);
-
-		}
-
-		return mapPosition;
-	}
-
-	private void rellenamatriz(StringBuilder texto,
-			HashMap<Character, AdriayList<Integer>> mapa, Nodo matriz) {
+	private void rellenamatriz(StringBuilder texto, Nodo matriz) {
 
 		String cadena = "";
-		//char ac = 'b';
+		for(int j = 0; j < texto.length(); j++){
 
-		for (Character a : mapa.keySet()) {
-			//System.out.println(a.getValue());
-			//long tiempoInicio = System.currentTimeMillis();
-			
-			for (int b = 0; b < mapa.get(a).getSize(); b++) {
-				//System.out.println(a.getKey());
-				cadena += a;
-				//ac = a.getKey();
-
+				cadena += texto.charAt(j);
 				for (int i = 1; i < Nodo.dimension; i++) {
 
 					try {
-						cadena += texto.charAt(mapa.get(a).get(b) + i);
+						cadena += texto.charAt(j+i);
 
 					} catch (StringIndexOutOfBoundsException e) {
 						// Llega a la ultima posicion
@@ -206,10 +158,6 @@ public class Generador {
 				}
 				matriz.set(cadena);
 				cadena = "";
-			}
-
-			//long tiempoFin = System.currentTimeMillis();
-			//System.out.println("\nChar:" + ac + " Tiempo: "+ ( tiempoFin - tiempoInicio ) + " ms");
 		}
 
 	}
